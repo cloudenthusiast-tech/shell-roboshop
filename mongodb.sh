@@ -39,3 +39,10 @@ VALIDATE $? "enabling monodb"
 
 systemctl start mongod 
 VALIDATE $? "start mongodb"
+
+
+sed -i 's/127.0.0.1/0.0.0.0/g' /etc/mongod.conf
+VALIDATE $? "allowing remote connections to mongodb"
+
+systemctl restart mongod
+VALIDATE $? "restart mongod"
