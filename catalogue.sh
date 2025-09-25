@@ -76,5 +76,3 @@ VALIDATE $? "loading data into mongo-server"
 
 systemctl restart catalogue
 VALIDATE $? "restart catalogue"
-
-
