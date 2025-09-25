@@ -49,13 +49,13 @@ curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue
 VALIDATE $? "download catalogue code"
 
 cd /app
-VALIDATE $? change to app dir" 
+VALIDATE $? "change to app dir" 
 
 unzip /tmp/catalogue.zip   &>>$LOG_FILE
 VALIDATE $? "unzip code at app dir from tmp dir"
 
 npm install   &>>$LOG_FILE
-VALIDATE $? "install nodejs"
+VALIDATE $? "install dependencies"
 
 cp catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "copied systemctl service"
