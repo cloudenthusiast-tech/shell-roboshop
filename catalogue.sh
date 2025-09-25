@@ -10,7 +10,7 @@ LOGS_FOLDER="/var/log/shell-script"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 MONGODB_HOST=mongodb.kolanu.space
-
+SCRIPT_DIR=$PWD
 echo "script_start_time=$(date +%s)"
 mkdir -p $LOGS_FOLDER
 echo "script executed in: $(date)"
@@ -57,7 +57,7 @@ VALIDATE $? "unzip code at app dir from tmp dir"
 npm install   &>>$LOG_FILE
 VALIDATE $? "install dependencies"
 
-cp catalogue.service /etc/systemd/system/catalogue.service
+cp $SCRIPT_DIR/catalogue.service /etc/systemd/system/catalogue.service
 VALIDATE $? "copied systemctl service"
 
 systemctl daemon-reload
