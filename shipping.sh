@@ -33,13 +33,13 @@ fi
 dnf install maven -y  &>>$LOG_FILE
 VALIDATE $? "installing maven"
 
-id roboshop
+id roboshop &>>$LOG_FILE
 if [ $? -ne 0 ]; then
 useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop
 else
 echo "user already exist"
 fi
-VALIDATE $? "checking user exists or not"
+
 
 mkdir  -p /app 
 VALIDATE $? "create new dir  /app"
@@ -55,8 +55,10 @@ VALIDATE $? "unzip code at app dir from tmp dir"
 
 cd /app 
 VALIDATE $? "change to /app dir"
+
 mvn clean package   &>>$LOG_FILE
 VALIDATE $? "install dependencies"
+
 mv target/shipping-1.0.jar shipping.jar 
 VALIDATE $? "moving target folder file to root"
 
@@ -67,8 +69,8 @@ systemctl daemon-reload
 VALIDATE $? "daemon reload"
 
 systemctl enable shipping 
-systemctl start shipping
-VALIDATE $? "starting and enabling the shipping service"
+
+VALIDATE $? "enable the shipping service"
 
 
 dnf install mysql -y  &>>$LOG_FILE
