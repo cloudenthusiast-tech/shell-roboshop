@@ -69,7 +69,7 @@ systemctl daemon-reload
 VALIDATE $? "reload systemd process"
 systemctl enable cart  &>>$LOG_FILE
 VALIDATE $? "enable cart"
-systemctl restart user
+systemctl restart cart
 VALIDATE $? "restart cart"
 
 SCRIPT_END_TIME=$(date +%s)
