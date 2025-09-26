@@ -11,9 +11,9 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 MONGODB_HOST=mongodb.kolanu.space
 SCRIPT_DIR=$PWD
-echo "script_executed_time=$(date +%F)"
+
 mkdir -p $LOGS_FOLDER
-echo "script executed in: $(date)"
+echo "script executed at: $(date)"
 
 if [ $USERID -ne 0 ]; then
    echo -e " $R error:: please run with root user previliges $N"
