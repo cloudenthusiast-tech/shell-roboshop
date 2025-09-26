@@ -22,29 +22,30 @@ fi
 
 VALIDATE(){
   if [ $1 -ne 0 ]; then
-   echo -e "$2 ... $R FAILURE $N" | tee -a $LOG_FILE
+   echo -e "$2 ... $R FAILURE $N" 
    exit 1
   else
-   echo -e " $2 ..... $G  SUCCESS $N"  | tee -a $LOG_FILE
+   echo -e " $2 ..... $G  SUCCESS $N"  
 fi
 }
 
 
-dnf module disable redis -y  &>>$LOG_FILE
-VALIDATE $? "disabling default redis version"
-dnf module enable redis:7 -y  &>>$LOG_FILE
-VALIDATE $? "disabling  redis version:7"
+cp rabbitmq.repo  /etc/yum.repos.d/rabbitmq.repo  &>>$LOG_FILE
 
-dnf install redis -y  &>>$LOG_FILE
-VALIDATE $? "installing redis"
 
-sed -i -e 's/127.0.0.1/0.0.0.0/g'   -e '/protected-mode/ c protected-mode no'  /etc/redis/redis.conf   # -e take extra arguments , -i permanent the changes
+dnf install rabbitmq-server -y  &>>$LOG_FILE
+VALIDATE $? "installing rabbitmq-server"
 
-systemctl enable redis 
-VALIDATE $? "enabling redis"
+systemctl enable rabbitmq-server  &>>$LOG_FILE
+VALIDATE $? "enabling rabbitmq-server"
+systemctl start rabbitmq-server  &>>$LOG_FILE
+VALIDATE $? "starting rabbitmq-server"
 
-systemctl start redis 
-VALIDATE $? "start redis"
+
+rabbitmqctl add_user roboshop roboshop123  &>>$LOG_FILE
+VALIDATE $? "adding system user for rabbitmq-server"
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"  &>>$LOG_FILE
+VALIDATE $? "setting permissions for rabbitmq-server"
 
 SCRIPT_END_TIME=$(date +%s)
 TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
