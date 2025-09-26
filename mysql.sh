@@ -22,10 +22,10 @@ fi
 
 VALIDATE(){
   if [ $1 -ne 0 ]; then
-   echo -e "$2 ... $R FAILURE $N" | tee -a $LOG_FILE
+   echo -e "$2 ... $R FAILURE $N" | 
    exit 1
   else
-   echo -e " $2 ..... $G  SUCCESS $N"  | tee -a $LOG_FILE
+   echo -e " $2 ..... $G  SUCCESS $N"  | 
 fi
 }
 
@@ -41,9 +41,9 @@ VALIDATE $? "starting mysql"   &>>$LOG_FILE
 
 password_set_up=$(mysql_secure_installation --set-root-pass RoboShop@1)  &>>$LOG_FILE
 if [ $? -ne 0 ]; then
- echo "mysql root password setup is $R .... FAILURE $N"
+ echo -e "mysql root password setup is $R .... FAILURE $N"
  else
-  echo "mysql root password setup is $R ....  SUCCESS $N"
+  echo -e"mysql root password setup is $R ....  SUCCESS $N"
   fi
 VALIDATE $? "setting mysql root password mysql"
 
