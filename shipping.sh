@@ -14,7 +14,7 @@ MYSQL_HOST=mysql.kolanu.space
 
 
 mkdir -p $LOGS_FOLDER
-echo "script executed in: $(date)"
+echo "script executed at: $(date)"
 
 if [ $USERID -ne 0 ]; then
    echo -e " $R error:: please run with root user previliges $N"
@@ -44,7 +44,7 @@ fi
 mkdir  -p /app 
 VALIDATE $? "create new dir  /app"
 
-curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/user-v3.zip    &>>$LOG_FILE
+curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping-v3.zip    &>>$LOG_FILE
 VALIDATE $? "download shipping code"
 
 cd /app
