@@ -11,7 +11,7 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
 SCRIPT_START_TIME=$(date +%s)
-echo "script_start_time=$(date +%s)"
+script_start_time=$(date +%s)
 mkdir -p $LOGS_FOLDER
 echo "script executed in: $(date)"
 
