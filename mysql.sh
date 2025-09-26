@@ -30,21 +30,23 @@ fi
 }
 
 
-dnf module disable redis -y  &>>$LOG_FILE
-VALIDATE $? "disabling default redis version"
-dnf module enable redis:7 -y  &>>$LOG_FILE
-VALIDATE $? "disabling  redis version:7"
+dnf install mysql-server -y  &>>$LOG_FILE
+VALIDATE $? "installing mysql"
 
-dnf install redis -y  &>>$LOG_FILE
-VALIDATE $? "installing redis"
+systemctl enable mysqld  &>>$LOG_FILE
+VALIDATE $? "enabling mysqld"
+systemctl start mysqld  
+VALIDATE $? "starting mysql"   &>>$LOG_FILE
 
-sed -i -e 's/127.0.0.1/0.0.0.0/g'   -e '/protected-mode/ c protected-mode no'  /etc/redis/redis.conf   # -e take extra arguments , -i permanent the changes
 
-systemctl enable redis 
-VALIDATE $? "enabling redis"
+password_set_up=$(mysql_secure_installation --set-root-pass RoboShop@1)  &>>$LOG_FILE
+if [ $? -ne 0 ]; then
+ echo "mysql root password setup is $R .... FAILURE $N"
+ else
+  echo "mysql root password setup is $R ....  SUCCESS $N"
+  fi
+VALIDATE $? "setting mysql root password mysql"
 
-systemctl start redis 
-VALIDATE $? "start redis"
 
 SCRIPT_END_TIME=$(date +%s)
 TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
