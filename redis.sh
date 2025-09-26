@@ -10,7 +10,7 @@ LOGS_FOLDER="/var/log/shell-script"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
-
+SCRIPT_START_TIME=$(date +%s)
 echo "script_start_time=$(date +%s)"
 mkdir -p $LOGS_FOLDER
 echo "script executed in: $(date)"
@@ -44,3 +44,6 @@ systemctl enable redis
 VALIDATE $? "enabling redis"
 systemctl start redis 
 VALIDATE $? "start redis"
+SCRIPT_END_TIME=$(date +%s)
+TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
+echo "script executed in: $TOTAL_SCRIPT_TIME seconds"
