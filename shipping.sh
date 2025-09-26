@@ -11,6 +11,7 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 SCRIPT_START_TIME=$(date +%s)
 MYSQL_HOST=mysql.kolanu.space
+SCRIPT_DIR=$PWD
 
 
 mkdir -p $LOGS_FOLDER
@@ -62,7 +63,7 @@ VALIDATE $? "install dependencies"
 mv target/shipping-1.0.jar shipping.jar 
 VALIDATE $? "moving target folder file to root"
 
-cp shipping.service /etc/systemd/system/shipping.service
+cp $SCRIPT_DIR/shipping.service /etc/systemd/system/shipping.service
 VALIDATE $? "copying systemd service"
 
 systemctl daemon-reload
