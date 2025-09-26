@@ -26,9 +26,7 @@ fi
 
 
 dnf module disable nodejs -y  &>>$LOG_FILE
-
 dnf module enable nodejs:20 -y  &>>$LOG_FILE
-
 dnf install nodejs -y  &>>$LOG_FILE
 
 id roboshop
@@ -44,7 +42,7 @@ curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue
 
 cd /app
 
-unzip  -o /tmp/catalogue.zip   &>>$LOG_FILE
+unzip  -o /tmp/catalogue.zip   &>>$LOG_FILE  #overwrite if files already exist  with "-o"
 
 npm install   &>>$LOG_FILE
 
