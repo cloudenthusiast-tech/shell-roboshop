@@ -44,7 +44,7 @@ cd /usr/share/nginx/html
 unzip /tmp/frontend.zip  &>>$LOG_FILE
 
 cp $SCRIPT_DIR/nginx.conf  /etc/nginx/nginx.conf
-
+systemctl daemon-reload
 systemctl restart nginx 
 
 END_TIME=$(date +%s)
