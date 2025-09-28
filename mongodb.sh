@@ -11,7 +11,7 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )   # cut -d .- basically cut whatever co
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"   # /var/log/shell-script/mongodb.log
 SCRIPT_DIR=$PWD
 
-start_time=$(date +%s)
+START_TIME=$(date +%s)
 mkdir -p $LOGS_FOLDER
 echo "script executed at: $(date)"
 

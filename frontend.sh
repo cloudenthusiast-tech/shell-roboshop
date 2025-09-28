@@ -47,6 +47,6 @@ cp $SCRIPT_DIR/nginx.conf  /etc/nginx/nginx.conf
 
 systemctl restart nginx 
 
-SCRIPT_END_TIME=$(date +%s)
-TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
+END_TIME=$(date +%s)
+TOTAL_SCRIPT_TIME=$(($END_TIME-$START_TIME))
 echo -e "script executed in:$G $TOTAL_SCRIPT_TIME seconds"

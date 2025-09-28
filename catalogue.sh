@@ -12,7 +12,7 @@ LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 MONGODB_HOST=mongodb.kolanu.space
 SCRIPT_DIR=$PWD
 
-start_time=$(date +%s)
+START_TIME=$(date +%s)
 mkdir -p $LOGS_FOLDER
 echo "script executed at:$(date)"
 
