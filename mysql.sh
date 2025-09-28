@@ -10,10 +10,9 @@ LOGS_FOLDER="/var/log/shell-script"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
-SCRIPT_START_TIME=$(date +%s)
-script_start_time=$(date +%s)
+START_TIME=$(date +%s)
 mkdir -p $LOGS_FOLDER
-echo "script executed in: $(date)"
+echo "script executed at:$(date)"
 
 if [ $USERID -ne 0 ]; then
    echo -e " $R error:: please run with root user previliges $N"
@@ -43,11 +42,11 @@ password_set_up=$(mysql_secure_installation --set-root-pass RoboShop@1)  &>>$LOG
 if [ $? -ne 0 ]; then
  echo -e "mysql root password setup is $R .... FAILURE $N"
  else
-  echo -e"mysql root password setup is $R ....  SUCCESS $N"
+  echo -e "mysql root password setup is $G ....  SUCCESS $N"
   fi
 VALIDATE $? "setting mysql root password mysql"
 
 
-SCRIPT_END_TIME=$(date +%s)
-TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
+END_TIME=$(date +%s)
+TOTAL_SCRIPT_TIME=$(($END_TIME-$START_TIME))
 echo -e "script executed in:$G $TOTAL_SCRIPT_TIME seconds "

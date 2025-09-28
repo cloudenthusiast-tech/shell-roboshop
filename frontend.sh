@@ -9,13 +9,11 @@ N="\e[37m"
 LOGS_FOLDER="/var/log/shell-script"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-SCRIPT_START_TIME=$(date +%s)
-
 SCRIPT_DIR=$PWD
 
+START_TIME=$(date +%s)
 
 mkdir -p $LOGS_FOLDER
-
 
 if [ $USERID -ne 0 ]; then
    echo -e " $R error:: please run with root user previliges $N"
@@ -27,7 +25,7 @@ VALIDATE(){
    echo -e "$2 ... $R FAILURE $N" 
    exit 1
   else
-   echo -e " $2 ..... $G  SUCCESS $N"  
+   echo -e "$2 ..... $G  SUCCESS $N"  
 fi
 }
 

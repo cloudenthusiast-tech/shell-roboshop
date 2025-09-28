@@ -11,9 +11,10 @@ SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 MONGODB_HOST=mongodb.kolanu.space
 SCRIPT_DIR=$PWD
-echo "script_start_time=$(date +%s)"
+
+start_time=$(date +%s)
 mkdir -p $LOGS_FOLDER
-echo "script executed in: $(date)"
+echo "script executed at:$(date)"
 
 if [ $USERID -ne 0 ]; then
    echo -e " $R error:: please run with root user previliges $N"
@@ -25,7 +26,7 @@ VALIDATE(){
    echo -e "$2 ... $R FAILURE $N" | tee -a $LOG_FILE
    exit 1
   else
-   echo -e " $2 ..... $G  SUCCESS $N"  | tee -a $LOG_FILE
+   echo -e "$2 ..... $G  SUCCESS $N"  | tee -a $LOG_FILE
 fi
 }
 
@@ -46,14 +47,14 @@ else
    echo -e "user already exist .... $Y SKIPPING $N"
 fi
 
-mkdir  -p /app 
-VALIDATE $? "create new dir for app"
+mkdir -p /app 
+VALIDATE $? "create new dir  /app"
 
 curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip   &>>$LOG_FILE
 VALIDATE $? "download catalogue code"
 
 cd /app
-VALIDATE $? "change to app dir" 
+VALIDATE $? "change to /app dir" 
 
 unzip  -o /tmp/catalogue.zip   &>>$LOG_FILE
 VALIDATE $? "unzip code at app dir from tmp dir"
@@ -84,3 +85,7 @@ else
 fi
 systemctl restart catalogue
 VALIDATE $? "restart catalogue"
+
+END_TIME=$(date +%s)
+TOTAL_SCRIPT_TIME=$(($END_TIME-$START_TIME))
+echo -e "script executed in:$G $TOTAL_SCRIPT_TIME seconds "

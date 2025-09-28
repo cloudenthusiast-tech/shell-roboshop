@@ -9,11 +9,11 @@ N="\e[37m"
 LOGS_FOLDER="/var/log/shell-script"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-
-SCRIPT_START_TIME=$(date +%s)
+SCRIPT_DIR=$PWD
+START_TIME=$(date +%s)
 
 mkdir -p $LOGS_FOLDER
-echo "script executed in: $(date)"
+echo "script executed at:$(date)"
 
 if [ $USERID -ne 0 ]; then
    echo -e " $R error:: please run with root user previliges $N"
@@ -25,12 +25,12 @@ VALIDATE(){
    echo -e "$2 ... $R FAILURE $N" 
    exit 1
   else
-   echo -e " $2 ..... $G  SUCCESS $N"  
+   echo -e "$2 ..... $G  SUCCESS $N"  
 fi
 }
 
 
-cp rabbitmq.repo  /etc/yum.repos.d/rabbitmq.repo  &>>$LOG_FILE
+cp $SCRIPT_DIR/rabbitmq.repo  /etc/yum.repos.d/rabbitmq.repo  &>>$LOG_FILE
 
 
 dnf install rabbitmq-server -y  &>>$LOG_FILE
@@ -47,6 +47,6 @@ VALIDATE $? "adding system user for rabbitmq-server"
 rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*"  &>>$LOG_FILE
 VALIDATE $? "setting permissions for rabbitmq-server"
 
-SCRIPT_END_TIME=$(date +%s)
-TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
+END_TIME=$(date +%s)
+TOTAL_SCRIPT_TIME=$(($END_TIME-$START_TIME))
 echo -e "script executed in:$G $TOTAL_SCRIPT_TIME seconds "

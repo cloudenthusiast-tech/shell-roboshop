@@ -9,11 +9,10 @@ N="\e[37m"
 LOGS_FOLDER="/var/log/shell-script"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
-SCRIPT_START_TIME=$(date +%s)
 MYSQL_HOST=mysql.kolanu.space
 SCRIPT_DIR=$PWD
 
-
+START_TIME=$(date +%s)
 mkdir -p $LOGS_FOLDER
 echo "script executed at: $(date)"
 
@@ -27,7 +26,7 @@ VALIDATE(){
    echo -e "$2 ... $R FAILURE $N" 
    exit 1
   else
-   echo -e " $2 ..... $G  SUCCESS $N"  
+   echo -e "$2 ..... $G  SUCCESS $N"  
 fi
 }
 
@@ -43,13 +42,13 @@ fi
 
 
 mkdir  -p /app 
-VALIDATE $? "create new dir  /app"
+VALIDATE $? "create new dir /app"
 
 curl -L -o /tmp/payment.zip https://roboshop-artifacts.s3.amazonaws.com/payment-v3.zip    &>>$LOG_FILE
 VALIDATE $? "download payment code"
 
 cd /app
-VALIDATE $? "change to app dir" 
+VALIDATE $? "change to /app dir" 
 
 unzip  -o /tmp/payment.zip   &>>$LOG_FILE
 VALIDATE $? "unzip code at app dir from tmp dir"
@@ -63,11 +62,10 @@ VALIDATE $? "install dependencies"
 cp $SCRIPT_DIR/payment.service /etc/systemd/system/payment.service
 
 systemctl daemon-reload
-
 systemctl enable payment 
 systemctl start payment
 VALIDATE $? "start payment"
 
-SCRIPT_END_TIME=$(date +%s)
-TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
+END_TIME=$(date +%s)
+TOTAL_SCRIPT_TIME=$(($END_TIME-$START_TIME))
 echo -e "script executed in:$G $TOTAL_SCRIPT_TIME seconds"

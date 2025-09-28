@@ -10,7 +10,7 @@ LOGS_FOLDER="/var/log/shell-script"
 SCRIPT_NAME=$(echo $0 | cut -d "." -f1 )
 LOG_FILE="$LOGS_FOLDER/$SCRIPT_NAME.log"
 
-SCRIPT_START_TIME=$(date +%s)
+START_TIME=$(date +%s)
 
 mkdir -p $LOGS_FOLDER
 echo "script executed in: $(date)"
@@ -25,20 +25,21 @@ VALIDATE(){
    echo -e "$2 ... $R FAILURE $N" | tee -a $LOG_FILE
    exit 1
   else
-   echo -e " $2 ..... $G  SUCCESS $N"  | tee -a $LOG_FILE
+   echo -e "$2 ..... $G  SUCCESS $N"  | tee -a $LOG_FILE
 fi
 }
 
 
 dnf module disable redis -y  &>>$LOG_FILE
 VALIDATE $? "disabling default redis version"
+
 dnf module enable redis:7 -y  &>>$LOG_FILE
 VALIDATE $? "disabling  redis version:7"
 
 dnf install redis -y  &>>$LOG_FILE
 VALIDATE $? "installing redis"
 
-sed -i -e 's/127.0.0.1/0.0.0.0/g'   -e '/protected-mode/ c protected-mode no'  /etc/redis/redis.conf   # -e take extra arguments , -i permanent the changes
+sed -i -e 's/127.0.0.1/0.0.0.0/g'  -e '/protected-mode/ c protected-mode no'  /etc/redis/redis.conf   # -e take extra arguments , -i permanent the changes
 VALIDATE $? "allow remote connections"
 
 systemctl enable redis 
@@ -47,6 +48,6 @@ VALIDATE $? "enabling redis"
 systemctl start redis 
 VALIDATE $? "start redis"
 
-SCRIPT_END_TIME=$(date +%s)
-TOTAL_SCRIPT_TIME=$(($SCRIPT_END_TIME-$SCRIPT_START_TIME))
-echo -e "script executed in:$G $TOTAL_SCRIPT_TIME seconds "
+END_TIME=$(date +%s)
+TOTAL_SCRIPT_TIME=$(($END_TIME-$START_TIME))
+echo -e "script executed in:$G $TOTAL_SCRIPT_TIME seconds"
