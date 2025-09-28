@@ -1,7 +1,7 @@
 #!/bin/bash
 
 AMI_ID="ami-09c813fb71547fc4f"
-SG_ID="sg-0097d14ad3a0baf5f"
+SG_ID="sg-04bb003e653859fa2"
 ZONE_ID="Z10446792H6QP6XMMVXFH" 
 DOMAIN_NAME="kolanu.space"
 for instance in $@ # mongodb redis mysql
